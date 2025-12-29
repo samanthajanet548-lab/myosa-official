@@ -25,3 +25,9 @@ This project would not have been possible without the combined support of these 
 * **Environment Module:** Monitors ambient light, pressure, and temperature, issuing warnings via buzzer and OLED display in low-light conditions.
 
 ## Features
+### 1. Posture Correction 
+- An accelerometer sensor is strapped to the user's shoulder and the system calibrates when the user sits with the correct posture.
+- If slouching is detected: buzzer sounds and the **laptop screen blacks out**. The user can resume their laptop work only if they return to correct posture.
+- Unlike mobile‑notification systems, the user must physically sit back straight for the buzzer to stop and the screen to become normal again.
+- Ensures **active compliance** rather than passive reminders.
+- Targets **freelancers and laptop users** to help prevent **lumbar spine pain** and **cervicogenic headaches**
