@@ -166,14 +166,16 @@ Connect the following sensors to your motherboard:
 ## 📂 Project Structure
 
 ```plaintext
-.
-├── images/                                  # Documentation and UI images
+
+├── images/                                  # UI images
 ├── source-code/                             # Core project files
 │   ├── Player.cs                            # Unity player movement script
 │   ├── flybird_2_better.ino                 # Gamified exercise firmware
 │   ├── lowlight_pressure_buzzer.ino         # Environment module firmware
 │   ├── posture_goodbad3_calib_buzzer.ino    # Posture module firmware
 │   ├── posture_monitorblack.py              # Python screen monitoring script
-│   └── z-onedrive-gamebuild/                # Unity game build files
+│   └── z-onedrive-gamebuild/                # Unity game build
 ├── videos/                                  # Demo videos
-└── ergonomic-biomechanics-and-ac...         # Project documentation/PDF
+└── ergonomic-biomechanics-and-ac...         # Project documentation .md file
+```
+## Contribution Notes
