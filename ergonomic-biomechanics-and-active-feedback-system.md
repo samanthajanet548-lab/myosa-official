@@ -59,7 +59,7 @@ https://github.com/user-attachments/assets/d7d2fc62-3a48-43da-aeff-8d697d9b6f0b
 ### 3. Environmental Monitoring 
 - Light sensor detects low lighting conditions.
 - In low light, the system issues a **warning via buzzer + OLED display**.
-- Under normal conditions, it displays **room light, temperature, and pressure**.
+- Under normal conditions, it displays **room light, temperature, and pressure** readings from the barometric pressure and light sensor.
 <p align="center">
   <img src="images/enviromental-warning.png" width="800"><br/>
   <i>enviromental warning</i>
