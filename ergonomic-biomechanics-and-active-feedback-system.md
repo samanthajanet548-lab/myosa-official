@@ -31,3 +31,12 @@ This project would not have been possible without the combined support of these 
 - Unlike mobile‑notification systems, the user must physically sit back straight for the buzzer to stop and the screen to become normal again.
 - Ensures **active compliance** rather than passive reminders.
 - Targets **freelancers and laptop users** to help prevent **lumbar spine pain** and **cervicogenic headaches**
+<p align="center">
+  <img src="images/active-posture-correction.png" width="800"><br/>
+  <i>active posture correction</i>
+</p>
+
+
+https://github.com/user-attachments/assets/66c64479-a4fb-4934-b4fe-21787e479275
+
+
