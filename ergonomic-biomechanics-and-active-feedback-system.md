@@ -39,4 +39,14 @@ This project would not have been possible without the combined support of these 
 
 https://github.com/user-attachments/assets/66c64479-a4fb-4934-b4fe-21787e479275
 
+### 2. Fitness Game Integration 
+- A **custom game** was built in Unityhub.
+- Accelerometer attached to a dumbbell detects bicep curls (0° → 90°).
+- When the user performs one full lift and the threshold is reached, the **NemoBird character jumps to avoid tree obstacles**.
+- Next jump is not initiated unless user moves dumbell to resting position to **prevent false jumps**.
+- The game accesses the sensors signals in the serial monitor via **serial communication** and sends the jump signal from the sensor to the player, gamifying exercise in real time.
+<p align="center">
+  <img src="images/gliding-nemobird-game.png" width="800"><br/>
+  <i>gamified exercise</i>
+</p>
 
