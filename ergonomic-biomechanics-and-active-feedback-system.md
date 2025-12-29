@@ -5,7 +5,7 @@ excerpt: A multi-sensor ergonomic system combining fitness gamification, posture
 tags: ["ergonomics", "fitness", "health-tech", "myosa", "motherboard"]
 ---
 <p align="center">
-  <img src="/folder-images/cover-image.png" width="800"><br/>
+  <img src="folder-images/cover-image.png" width="800"><br/>
   <i>cover image</i>
 </p>
 # MYOSA EBAFS
