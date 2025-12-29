@@ -144,7 +144,8 @@ Connect the following sensors to your motherboard:
 - Install the following python package in VS code
   ```bash
      pip install pyserial
-- Install the following c# package in VS code
-  
+- Import the following c# package in VS code
+  **UnityEngine**
+  **System.IO.Ports**
   
    
