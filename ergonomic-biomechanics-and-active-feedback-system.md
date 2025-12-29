@@ -71,7 +71,7 @@ https://github.com/user-attachments/assets/661feed8-7ec2-409c-b19b-b73993e52855
 
 ## Usage Instructions
 
-Follow these steps to set up and run the **Posture Control Module**.
+**Follow these steps to set up and run the Posture Control Module**.
 
 ### 1. Hardware Setup
 Connect the **MPU6050** sensor to your motherboard.
@@ -91,4 +91,36 @@ Connect the **MPU6050** sensor to your motherboard.
 
 ### 3. Python Code
 Open VS code and run the posture_monitorblack.py script
+
+---
+
+
+**Follow these steps to set up and run the Gamified Exercise Module**.
+
+### 1. Hardware Connection
+Connect the **MPU6050** sensor to your motherboard. Ensure the sensor is securely attached to the dumbell
+
+
+
+---
+
+### 2. Firmware Setup (Arduino IDE)
+1. Navigate to the `source-code/` folder.
+2. Open the file named `flybird_2_better.ino`.
+3. Upload the code to your board.
+4. **⚠️ Important:** Close the Arduino Serial Monitor immediately after the upload is successful so Unity can access the data.
+
+---
+
+### 3. Launching the Game (Unity)
+1. Navigate to the `z-onedrive-gamebuild` folder inside the source-code folder.
+2. Open the project in the **Unity Editor**.
+3. Press the **Play** button to start the game. Your physical movements will now control the "Nemobird" or player in real-time.
+
+---
+
+### 4. Simplified Version
+If you want to inspect or modify how the movement data is processed within the game engine:
+* Open the `player.cs` script in **VS Code**. 
+* Attach this script to a simple gameobject (eg- square) in unity editor.
 
