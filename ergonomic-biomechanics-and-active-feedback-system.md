@@ -146,4 +146,5 @@ Connect the following sensors to your motherboard:
      pip install pyserial
 - Install the following c# package in VS code
   
+  
    
