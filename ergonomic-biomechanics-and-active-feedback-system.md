@@ -145,7 +145,7 @@ Connect the following sensors to your motherboard:
   ```bash
      pip install pyserial
 - Import the following c# package in VS code
-  **UnityEngine**
-  **System.IO.Ports**
+ - **UnityEngine**
+ - **System.IO.Ports**
   
    
