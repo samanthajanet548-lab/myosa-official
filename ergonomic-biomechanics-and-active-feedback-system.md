@@ -147,5 +147,18 @@ Connect the following sensors to your motherboard:
 - Import the following c# package in VS code
  - **UnityEngine**
  - **System.IO.Ports**
-  
-   
+
+## Technology Stack
+### 💻 Programming Languages
+* **C++ (Arduino)**: Sensor data acquisition and hardware logic.
+* **C# (Unity)**: Game physics, player movement, and sprite control.
+* **Python**: Desktop application for screen monitoring and GUI.
+
+### 🔌 Connectivity & Frameworks
+* **Unity Hub & Editor**: Game engine for the exercise module.
+* **Serial Communication**: 
+    * `System.IO.Ports` (C#) for Unity-to-Hardware integration.
+    * `PySerial` (Python) for hardware-to-PC data transfer.
+* **GUIs & Libraries**: 
+    * `Tkinter` (Python) for the monitoring interface.
+    * `Myosa Libraries` for Arduino sensor management.
