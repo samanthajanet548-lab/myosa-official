@@ -50,3 +50,7 @@ https://github.com/user-attachments/assets/66c64479-a4fb-4934-b4fe-21787e479275
   <i>gamified exercise</i>
 </p>
 
+
+https://github.com/user-attachments/assets/d7d2fc62-3a48-43da-aeff-8d697d9b6f0b
+
+
