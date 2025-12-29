@@ -69,3 +69,26 @@ https://github.com/user-attachments/assets/d7d2fc62-3a48-43da-aeff-8d697d9b6f0b
 https://github.com/user-attachments/assets/661feed8-7ec2-409c-b19b-b73993e52855
 
 
+## Usage Instructions
+
+Follow these steps to set up and run the **Posture Control Module**.
+
+### 1. Hardware Setup
+Connect the **MPU6050** sensor to your motherboard.
+
+
+
+---
+
+### 2. Firmware Configuration (Arduino IDE)
+1. Navigate to the `source_code` folder in this repository.
+2. Open the file `posture_goodbad3_calib_buzzer.ino` using the **Arduino IDE**.
+3. Select your board and the correct COM port.
+4. Click **Upload**.
+5. **⚠️ Important:** Once the upload is complete, **close the Serial Monitor**. The Python script requires exclusive access to the serial port to read the data.
+
+---
+
+### 3. Python Code
+Open VS code and run the posture_monitorblack.py script
+
