@@ -113,7 +113,7 @@ Connect the **MPU6050** sensor to your motherboard. Ensure the sensor is securel
 ---
 
 ### 3. Launching the Game (Unity)
-1. Navigate to the `z-onedrive-gamebuild` folder inside the source-code folder.
+1. Navigate to the `z-onedrive-gamebuild` file inside the source-code folder.
 2. Open the project in the **Unity Editor**.
 3. Press the **Play** button to start the game. Your physical movements will now control the "Nemobird" or player in real-time.
 
@@ -124,3 +124,26 @@ If you want to inspect or modify how the movement data is processed within the g
 * Open the `player.cs` script in **VS Code**. 
 * Attach this script to a simple gameobject (eg- square) in unity editor.
 
+---
+
+**Follow these steps to set up and run the Environment Module**.
+
+### 1. Hardware Connection
+Connect the following sensors to your motherboard:
+* **BMP180**: Measures barometric pressure and temperature.
+* **APDS-9960**: Measures ambient light levels.
+1. Locate the `lowlight_pressure_buzzer.ino` sketch in the `source_code/` folder.
+2. Open the file in the Arduino IDE.
+3. Ensure you have the necessary myosa libraries installed.
+4. Upload the code to your board.
+
+---
+## Requirements / Installation
+- Download myosa libraries
+- Install Unityhub and Unity editor
+- Install the following python package in VS code
+  ```bash
+     pip install pyserial
+- Install the following c# package in VS code
+  ```bash
+     pip install pyserial
