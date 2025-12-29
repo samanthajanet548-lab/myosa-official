@@ -23,3 +23,5 @@ This project would not have been possible without the combined support of these 
 * **Posture Module:** Enforces active compliance by blacking out the laptop screen and sounding a buzzer when slouching is detected. User needs to sit back straight to be able to resume work.
 * **Fitness Module:** Gamifies exercise through a custom developed game where the NemoBird character jumps to avoid tree obstacles when a bicep curl is performed.
 * **Environment Module:** Monitors ambient light, pressure, and temperature, issuing warnings via buzzer and OLED display in low-light conditions.
+
+## Features
