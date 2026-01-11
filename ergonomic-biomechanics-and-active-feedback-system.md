@@ -183,4 +183,6 @@ Connect the following sensors to your motherboard:
 From the day the MYOSA kit arrived, we were excited to begin experimenting.The journey brought plenty of challenges: we had close calls with the screen blackout implementation and the Unity game mechanics, often without existing projects to reference online. Each obstacle demanded persistence and creative problem‑solving. Despite the hurdles, we transformed the concept into a working prototype.This project reflects our technical growth and the resilience behind every iteration.
 
 **Note on Hardware**: The initial plan was to use a servo motor to physically close the laptop screen, but through testing we found that a software‑driven blackout achieved the same compliance enforcement. This adjustment simplified the design while keeping the intended impact intact and fully exploiting the myosa kit.
-Sensors are exposed in the videos to show the MYOSA kit integration; final versions will use custom 3D-printed casings for aesthetics and durability
+Sensors are exposed in the videos to show the MYOSA kit integration; final versions will use custom 3D-printed casings for aesthetics and durability.
+More levels and interfaces can be added to the game in the future.
+Presentation video is in the videos folder.
