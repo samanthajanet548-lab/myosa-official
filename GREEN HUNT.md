@@ -48,6 +48,8 @@ GREEN HUNT follows a four-stage workflow:
    The proposed underwater vehicle carries an ultrasound-based treatment system to perform targeted intervention at the identified hotspot.
 
 ---
+<img width="1166" height="473" alt="Screenshot 2026-09-15 221219" src="https://github.com/user-attachments/assets/40a33eb7-f312-490d-b89a-6aba2841d14e" />
+
 
 ## Software Prototype
 
