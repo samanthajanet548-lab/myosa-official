@@ -1,78 +1,79 @@
-# 🌊 GREEN HUNT
 
-### Autonomous Sensing and Low-Power Ultrasonic Control for Harmful Algal Blooms
+# GREEN HUNT
 
-> **A proposed autonomous underwater system for detecting and controlling harmful algal blooms using spectral sensing, discrete-time signal processing, and low-power ultrasonic actuation.**
+### Satellite-Guided Intelligence for Autonomous Harmful Algal Bloom Intervention
 
----
+GREEN HUNT is an environmental intelligence and autonomous intervention concept designed to identify harmful algal bloom (HAB) hotspots in freshwater bodies and guide an underwater vehicle toward targeted intervention zones.
 
-## 📌 Overview
-
-**GREEN HUNT** is a proposed autonomous underwater system designed to monitor freshwater bodies for **harmful algal blooms (HABs)** and provide a targeted, low-power approach for algae control.
-
-The system combines:
-
-- 🌿 Spectral sensing for algae detection
-- 📡 Discrete-time signal processing for sensor data analysis
-- 🔊 Low-power ultrasonic actuation
-- 🤖 Autonomous underwater operation
-- ⚙️ Mechanical propulsion using an elastic energy-storage mechanism
-- 💾 Time-stamped data logging
-- 🛰️ MATLAB-based signal and system simulations
-
-The current work is a **CAD and simulation-based prototype study**. Physical fabrication and experimental water-body validation are planned as future work.
+The project combines **multispectral remote sensing, spatial spectral analysis, mission planning, autonomous underwater vehicle (AUV) design, and ultrasound-based treatment** into a single workflow.
 
 ---
 
-## 🎯 Problem Statement
+## Problem
 
-Harmful algal blooms can occur when freshwater bodies experience conditions such as:
+Harmful algal blooms can significantly affect freshwater ecosystems and water quality. Conventional monitoring and treatment approaches may require extensive surveying, chemical intervention, or high energy consumption.
 
-- Excess nutrient availability
-- Increased water temperature
-- Reduced water movement
-- Favorable conditions for rapid algal growth
+Deploying an underwater vehicle across an entire water body can also waste valuable onboard energy if the location of the bloom is unknown.
 
-Large-scale monitoring and treatment can be expensive, energy-intensive, or dependent on chemical treatment.
+GREEN HUNT addresses this through a simple principle:
 
-GREEN HUNT explores a compact autonomous system that can **sense → process → respond**, while reducing dependence on continuous battery-powered propulsion and chemical intervention.
+> **Detect the hotspot first. Then send the vehicle where intervention is required.**
 
 ---
 
-## 💡 Proposed Solution
+## Our Approach
 
-GREEN HUNT follows a three-stage approach:
+GREEN HUNT follows a four-stage workflow:
+
+**OBSERVE → DETECT → PLAN → INTERVENE**
+
+1. **Observe**  
+   Satellite imagery provides spatial information about the target water body.
+
+2. **Detect**  
+   Multispectral information, particularly red and red-edge spectral responses, is analysed using the Normalized Difference Chlorophyll Index (NDCI) to identify chlorophyll-related hotspots.
+
+3. **Plan**  
+   The software identifies priority regions and generates an intervention route for the autonomous underwater vehicle.
+
+4. **Intervene**  
+   The proposed underwater vehicle carries an ultrasound-based treatment system to perform targeted intervention at the identified hotspot.
+
+---
+
+## Software Prototype
+
+The GREEN HUNT Mission Control platform provides a unified interface for environmental analysis and AUV mission planning.
+
+### Current software features
+
+- Target water-body selection
+- Satellite-based spatial visualization
+- NDCI spectral analysis
+- Spatial hotspot identification
+- HAB risk visualization
+- Automated mission/waypoint generation
+- Virtual AUV intervention route
+- Mission logs and telemetry
+- Environmental parameter display
+- Dark-mode mission-control interface
+
+### Software workflow
 
 ```text
-       WATER BODY
-           │
-           ▼
-   ┌─────────────────┐
-   │  Spectral Sensing│
-   │     AS7341       │
-   └────────┬────────┘
-            │
-            ▼
-   ┌─────────────────┐
-   │ Signal Processing│
-   │    & Analysis    │
-   │     MATLAB       │
-   └────────┬────────┘
-            │
-            ▼
-   ┌─────────────────┐
-   │ Algae Detection  │
-   │  & Concentration │
-   │     Estimation   │
-   └────────┬────────┘
-            │
-            ▼
-   ┌─────────────────┐
-   │ Ultrasonic       │
-   │ Control System   │
-   └────────┬────────┘
-            │
-            ▼
-   Pressure variation influences
-   algal buoyancy and water-column
-   distribution
+Target Water Body
+        ↓
+Satellite Multispectral Data
+        ↓
+Spectral Pre-processing
+        ↓
+NDCI Analysis
+        ↓
+Hotspot Identification
+        ↓
+Decision & Mission Planning
+        ↓
+Virtual AUV Route
+        ↓
+Targeted Intervention
+
