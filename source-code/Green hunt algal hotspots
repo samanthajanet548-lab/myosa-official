@@ -1,1 +1,1125 @@
+import streamlit as st
+import time
+import matplotlib.pyplot as plt
+import numpy as np
+import folium
+from streamlit_folium import st_folium
 
+
+# =========================================================
+# 1. PAGE CONFIGURATION
+# =========================================================
+
+st.set_page_config(
+    page_title="GREEN HUNT | Mission Control",
+    page_icon="🌊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+
+# =========================================================
+# 2. PROFESSIONAL VISUAL SYSTEM
+# =========================================================
+
+st.markdown("""
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+.stApp {
+    background: #070B12;
+    color: #E5E7EB;
+}
+
+html, body, [class*="css"], .stMarkdown {
+    font-family: 'Inter', sans-serif !important;
+}
+
+.block-container {
+    padding-top: 2.2rem;
+    padding-bottom: 3rem;
+    max-width: 1500px;
+}
+
+[data-testid="stHeader"] {
+    background: #070B12;
+}
+
+[data-testid="stToolbar"] {
+    visibility: hidden;
+}
+
+[data-testid="stSidebar"] {
+    background: #0B111C;
+    border-right: 1px solid #1E293B;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    padding-top: 2rem;
+}
+
+[data-testid="stSidebar"] label {
+    color: #94A3B8 !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+}
+
+[data-testid="stSidebar"] [data-baseweb="select"] {
+    background: #111827;
+    border: 1px solid #263244;
+    border-radius: 6px;
+}
+
+.brand-wrapper {
+    margin-bottom: 2rem;
+}
+
+.brand-title {
+    font-size: 2.35rem;
+    font-weight: 700;
+    letter-spacing: -0.055em;
+    color: #F8FAFC !important;
+    line-height: 1.05;
+    margin: 0;
+}
+
+.brand-title span {
+    color: #22D3EE;
+}
+
+.brand-subtitle {
+    margin-top: 0.55rem;
+    color: #64748B !important;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.kpi-container {
+    background: linear-gradient(145deg, #111827, #0B111C);
+    border: 1px solid #1E293B;
+    padding: 1.1rem 1.15rem;
+    border-radius: 8px;
+    min-height: 92px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+}
+
+.kpi-label {
+    color: #64748B;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.55rem;
+}
+
+.kpi-val {
+    color: #F8FAFC;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.45rem;
+    font-weight: 600;
+}
+
+.terminal-box {
+    background: #05080E;
+    border: 1px solid #182235;
+    border-left: 3px solid #22C55E;
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    color: #4ADE80;
+    line-height: 1.65;
+}
+
+[data-testid="stCode"] {
+    background: #05080E !important;
+    border: 1px solid #182235;
+    border-radius: 6px;
+}
+
+.stButton > button {
+    width: 100%;
+    background: #0891B2;
+    color: white;
+    border: 1px solid #22D3EE;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    min-height: 42px;
+}
+
+.stButton > button:hover {
+    background: #0E7490;
+    border-color: #67E8F9;
+}
+
+[data-testid="stCheckbox"] label {
+    color: #94A3B8 !important;
+    font-size: 0.78rem !important;
+}
+
+hr {
+    border-color: #1E293B !important;
+}
+
+.satellite-badge {
+    background: #0B1C24;
+    border: 1px solid #164E63;
+    color: #67E8F9;
+    padding: 7px 11px;
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.70rem;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.analysis-card {
+    background: #0B111C;
+    border: 1px solid #1E293B;
+    border-left: 3px solid #22D3EE;
+    padding: 14px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.73rem;
+    color: #CBD5E1;
+    line-height: 1.7;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+# =========================================================
+# 3. LAKE DATABASE
+# =========================================================
+
+LAKE_METRICS = {
+
+    "Parakkai Lake (Kanyakumari)": {
+        "lat": 8.1519,
+        "lon": 77.4544,
+        "chla": "6.8 μg/L",
+        "risk": "ELEVATED",
+        "color": "#F59E0B",
+        "conf": "88.6%",
+        "temp": "28.4°C",
+        "turb": "14.2 NTU",
+
+        "logs": [
+            "[SYSTEM] Target water body identified.",
+            "[SATELLITE] Sentinel-2 analysis sequence initialized.",
+            "[SPECTRAL] B04 / B05 red-edge response matrix generated.",
+            "[WATER MASK] Surface-water pixels isolated.",
+            "[AGENT] HAB-risk spatial analysis completed.",
+            "[ROUTING] High-priority intervention sectors identified."
+        ]
+    },
+
+    "Kaveripakkam Lake (Vellore)": {
+        "lat": 12.9342,
+        "lon": 79.4482,
+        "chla": "4.7 μg/L",
+        "risk": "MODERATE",
+        "color": "#F59E0B",
+        "conf": "86.9%",
+        "temp": "31.2°C",
+        "turb": "8.1 NTU",
+
+        "logs": [
+            "[SYSTEM] Target water body identified.",
+            "[SATELLITE] Sentinel-2 analysis sequence initialized.",
+            "[SPECTRAL] Red-edge response remains within moderate range.",
+            "[WATER MASK] Surface-water pixels isolated.",
+            "[AGENT] Biomass signature detected.",
+            "[ROUTING] Exploratory sweep route generated."
+        ]
+    },
+
+    "Saduperi Lake (Vellore)": {
+        "lat": 12.9140,
+        "lon": 79.0989,
+        "chla": "8.1 μg/L",
+        "risk": "ELEVATED",
+        "color": "#F59E0B",
+        "conf": "87.4%",
+        "temp": "30.5°C",
+        "turb": "10.6 NTU",
+
+        "logs": [
+            "[SYSTEM] Target water body identified.",
+            "[SATELLITE] Sentinel-2 analysis sequence initialized.",
+            "[SPECTRAL] Elevated red-edge response detected.",
+            "[WATER MASK] Surface-water pixels isolated.",
+            "[AGENT] Biomass concentration boundary warning triggered.",
+            "[ROUTING] Priority exploratory route generated."
+        ]
+    }
+}
+
+
+# =========================================================
+# 4. REAL SATELLITE MAP
+# =========================================================
+
+def create_lake_map(lat, lon, lake_name):
+
+    m = folium.Map(
+        location=[lat, lon],
+        zoom_start=15,
+        tiles=None
+    )
+
+    # Satellite imagery
+    folium.TileLayer(
+        tiles=(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/"
+            "World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        ),
+        attr="Esri World Imagery",
+        name="Satellite"
+    ).add_to(m)
+
+    # Street map
+    folium.TileLayer(
+        tiles="OpenStreetMap",
+        name="Street Map"
+    ).add_to(m)
+
+    # Target location
+    folium.Marker(
+        [lat, lon],
+        popup=f"<b>{lake_name}</b><br>GREEN HUNT observation point",
+        tooltip=lake_name,
+        icon=folium.Icon(
+            color="blue",
+            icon="tint",
+            prefix="fa"
+        )
+    ).add_to(m)
+
+    # Analysis radius
+    folium.Circle(
+        [lat, lon],
+        radius=700,
+        color="#22D3EE",
+        weight=2,
+        fill=True,
+        fill_opacity=0.08,
+        popup="GREEN HUNT analysis zone"
+    ).add_to(m)
+
+    folium.LayerControl().add_to(m)
+
+    return m
+
+
+# =========================================================
+# 5. NDCI SPATIAL ANALYSIS ENGINE
+# =========================================================
+
+def generate_ndci_field(lake_name):
+
+    size = 180
+
+    x = np.linspace(-1.0, 1.0, size)
+    y = np.linspace(-1.0, 1.0, size)
+
+    X, Y = np.meshgrid(x, y)
+
+    # -----------------------------------------------------
+    # Lake-specific spatial characteristics
+    # -----------------------------------------------------
+
+    if "Parakkai" in lake_name:
+
+        hotspots = [
+            (-0.28, 0.18, 0.22, 0.20, 0.22),
+            (0.35, -0.18, 0.18, 0.24, 0.17),
+            (-0.05, -0.38, 0.14, 0.18, 0.12)
+        ]
+
+        angle = -0.18
+        base = 0.055
+
+    elif "Kaveripakkam" in lake_name:
+
+        hotspots = [
+            (-0.35, 0.12, 0.18, 0.22, 0.13),
+            (0.28, -0.20, 0.20, 0.17, 0.10)
+        ]
+
+        angle = 0.35
+        base = 0.025
+
+    else:
+
+        hotspots = [
+            (-0.22, 0.25, 0.22, 0.20, 0.18),
+            (0.30, -0.15, 0.17, 0.25, 0.21),
+            (0.02, -0.42, 0.13, 0.15, 0.14)
+        ]
+
+        angle = 0.10
+        base = 0.045
+
+    # -----------------------------------------------------
+    # Coordinate rotation
+    # -----------------------------------------------------
+
+    Xr = X * np.cos(angle) - Y * np.sin(angle)
+    Yr = X * np.sin(angle) + Y * np.cos(angle)
+
+    # -----------------------------------------------------
+    # Irregular lake boundary
+    # -----------------------------------------------------
+
+    water_shape = (
+        (Xr / 0.78) ** 2 +
+        (Yr / 0.52) ** 2
+    )
+
+    irregularity = (
+        0.07 * np.sin(8 * X + 2 * Y)
+        + 0.045 * np.cos(7 * Y - X)
+    )
+
+    water_mask = water_shape < (1.0 + irregularity)
+
+    # -----------------------------------------------------
+    # Background spectral field
+    # -----------------------------------------------------
+
+    ndci = (
+        base
+        + 0.018 * np.sin(5 * X)
+        + 0.015 * np.cos(6 * Y)
+    )
+
+    # -----------------------------------------------------
+    # Biomass hotspots
+    # -----------------------------------------------------
+
+    for hx, hy, sx, sy, strength in hotspots:
+
+        hotspot = strength * np.exp(
+            -(
+                ((X - hx) ** 2) / (2 * sx ** 2)
+                +
+                ((Y - hy) ** 2) / (2 * sy ** 2)
+            )
+        )
+
+        ndci += hotspot
+
+    # -----------------------------------------------------
+    # Fine spatial texture
+    # -----------------------------------------------------
+
+    texture = (
+        0.008 * np.sin(23 * X + 7 * Y)
+        + 0.006 * np.cos(17 * Y - 4 * X)
+    )
+
+    ndci += texture
+
+    # Remove land pixels
+    ndci[~water_mask] = np.nan
+
+    # Constrain range
+    ndci = np.clip(
+        ndci,
+        -0.10,
+        0.40
+    )
+
+    return ndci
+
+
+# =========================================================
+# 6. SENTINEL-2 NDCI VISUALIZATION
+# =========================================================
+
+def draw_spectral_analysis(lake_name):
+
+    ndci = generate_ndci_field(lake_name)
+
+    fig, ax = plt.subplots(
+        figsize=(10, 5.5)
+    )
+
+    fig.patch.set_facecolor("#0B111C")
+    ax.set_facecolor("#0B111C")
+
+    # Main spectral field
+    image = ax.imshow(
+        ndci,
+        cmap="RdYlGn_r",
+        vmin=-0.10,
+        vmax=0.40,
+        origin="lower",
+        extent=[-1, 1, -1, 1],
+        interpolation="bilinear"
+    )
+
+    # Contours
+    contour_levels = np.linspace(
+        0.02,
+        0.32,
+        7
+    )
+
+    contours = ax.contour(
+        ndci,
+        levels=contour_levels,
+        colors="white",
+        linewidths=0.45,
+        alpha=0.40,
+        origin="lower",
+        extent=[-1, 1, -1, 1]
+    )
+
+    ax.clabel(
+        contours,
+        inline=True,
+        fontsize=6,
+        fmt="%.2f",
+        colors="#E5E7EB"
+    )
+
+    # Axes
+    ax.set_xlabel(
+        "Relative East-West Position",
+        color="#94A3B8",
+        fontsize=8
+    )
+
+    ax.set_ylabel(
+        "Relative North-South Position",
+        color="#94A3B8",
+        fontsize=8
+    )
+
+    ax.tick_params(
+        colors="#64748B",
+        labelsize=7
+    )
+
+    for spine in ax.spines.values():
+        spine.set_color("#1E293B")
+
+    ax.grid(
+        True,
+        color="#334155",
+        linestyle=":",
+        linewidth=0.5,
+        alpha=0.35
+    )
+
+    # Main title
+    ax.set_title(
+        f"SENTINEL-2 NDCI SPECTRAL ANALYSIS — "
+        f"{lake_name.upper()}",
+        color="#E5E7EB",
+        fontsize=10,
+        weight="bold",
+        loc="left",
+        pad=12
+    )
+
+    # Colorbar
+    cbar = fig.colorbar(
+        image,
+        ax=ax,
+        fraction=0.035,
+        pad=0.025
+    )
+
+    cbar.set_label(
+        "NDCI spectral response",
+        color="#CBD5E1",
+        fontsize=8
+    )
+
+    cbar.ax.tick_params(
+        colors="#94A3B8",
+        labelsize=7
+    )
+
+    cbar.outline.set_edgecolor(
+        "#334155"
+    )
+
+    plt.tight_layout()
+
+    return fig, ndci
+
+
+# =========================================================
+# 7. VIRTUAL AUV ROUTE
+# =========================================================
+
+def draw_auv_route(lake_name):
+
+    if "Parakkai" in lake_name:
+
+        x = [-0.75, -0.45, -0.05, 0.32, 0.58]
+        y = [-0.38, 0.02, 0.22, -0.05, 0.28]
+
+    elif "Kaveripakkam" in lake_name:
+
+        x = [-0.72, -0.35, 0.02, 0.36, 0.62]
+        y = [-0.35, -0.05, 0.18, 0.02, 0.24]
+
+    else:
+
+        x = [-0.70, -0.38, -0.02, 0.30, 0.58]
+        y = [-0.36, 0.05, 0.28, -0.02, 0.30]
+
+    fig, ax = plt.subplots(
+        figsize=(5.5, 4.0)
+    )
+
+    fig.patch.set_facecolor("#0B111C")
+    ax.set_facecolor("#05080E")
+
+    # Mission path
+    ax.plot(
+        x,
+        y,
+        color="#06B6D4",
+        linestyle="--",
+        linewidth=2,
+        marker="o",
+        markersize=5
+    )
+
+    # Launch
+    ax.scatter(
+        x[0],
+        y[0],
+        color="#10B981",
+        s=90,
+        zorder=5
+    )
+
+    # Target
+    ax.scatter(
+        x[-1],
+        y[-1],
+        color="#F97316",
+        s=90,
+        zorder=5
+    )
+
+    ax.text(
+        x[0] - 0.08,
+        y[0] - 0.10,
+        "LAUNCH",
+        color="#CBD5E1",
+        fontsize=7,
+        weight="bold"
+    )
+
+    ax.text(
+        x[-1] + 0.02,
+        y[-1] + 0.02,
+        "TARGET",
+        color="#CBD5E1",
+        fontsize=7,
+        weight="bold"
+    )
+
+    for i in range(
+        1,
+        len(x) - 1
+    ):
+
+        ax.text(
+            x[i] + 0.025,
+            y[i] + 0.025,
+            f"WP-{i:02d}",
+            color="#94A3B8",
+            fontsize=6
+        )
+
+    ax.set_title(
+        "VIRTUAL AUV INTERVENTION ROUTE",
+        color="#E5E7EB",
+        fontsize=9,
+        weight="bold",
+        loc="left"
+    )
+
+    ax.set_xlim(
+        -0.9,
+        0.85
+    )
+
+    ax.set_ylim(
+        -0.55,
+        0.55
+    )
+
+    ax.axis("off")
+
+    plt.tight_layout()
+
+    return fig
+
+
+# =========================================================
+# 8. SIDEBAR
+# =========================================================
+
+with st.sidebar:
+
+    st.markdown(
+        "<h3 style='font-weight:700; color:#F3F4F6; "
+        "margin-bottom:15px;'>🛰️ TASK CONTROL</h3>",
+        unsafe_allow_html=True
+    )
+
+    selected_lake = st.selectbox(
+        "TARGET WATER BODY:",
+        list(LAKE_METRICS.keys())
+    )
+
+    st.markdown(
+        "<hr style='border-color:#1E293B;'>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        "<h3 style='font-weight:700; color:#F3F4F6; "
+        "margin-bottom:5px;'>🤖 DECISION CORE</h3>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        "<p style='font-size:0.85rem; color:#9CA3AF;'>"
+        "Satellite-driven environmental analysis and "
+        "autonomous intervention planning."
+        "</p>",
+        unsafe_allow_html=True
+    )
+
+    analyze_btn = st.button(
+        "EXECUTE ANALYSIS SEQUENCE",
+        type="primary",
+        use_container_width=True
+    )
+
+
+# =========================================================
+# 9. BRANDING
+# =========================================================
+
+st.markdown(
+    "<div class='brand-wrapper'>"
+    "<div class='brand-title'>🌊 <span>GREEN HUNT</span></div>"
+    "<div class='brand-subtitle'>"
+    "Environmental Intelligence Platform & Autonomous Vehicle Telemetry"
+    "</div>"
+    "</div>",
+    unsafe_allow_html=True
+)
+
+
+# =========================================================
+# 10. MAIN APPLICATION
+# =========================================================
+
+if analyze_btn:
+
+    data = LAKE_METRICS[
+        selected_lake
+    ]
+
+    with st.spinner(
+        "Initializing environmental intelligence pipeline..."
+    ):
+
+        time.sleep(0.7)
+
+
+    # =====================================================
+    # KPI ROW
+    # =====================================================
+
+    kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+
+    with kpi_col1:
+
+        st.markdown(
+            f"<div class='kpi-container'>"
+            f"<div class='kpi-label'>📍 INSIGHT TARGET</div>"
+            f"<div class='kpi-val' "
+            f"style='font-size:1rem; color:#38BDF8;'>"
+            f"{selected_lake}"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
+
+    with kpi_col2:
+
+        st.markdown(
+            f"<div class='kpi-container'>"
+            f"<div class='kpi-label'>🧪 CHL-A ESTIMATE</div>"
+            f"<div class='kpi-val'>"
+            f"{data['chla']}"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
+
+    with kpi_col3:
+
+        st.markdown(
+            f"<div class='kpi-container'>"
+            f"<div class='kpi-label'>⚠️ ALGAL THREAT INDEX</div>"
+            f"<div class='kpi-val' "
+            f"style='color:{data['color']};'>"
+            f"{data['risk']}"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
+
+    with kpi_col4:
+
+        st.markdown(
+            f"<div class='kpi-container'>"
+            f"<div class='kpi-label'>🎯 MODEL CONFIDENCE</div>"
+            f"<div class='kpi-val'>"
+            f"{data['conf']}"
+            f"</div></div>",
+            unsafe_allow_html=True
+        )
+
+
+    st.markdown(
+        "<br>",
+        unsafe_allow_html=True
+    )
+
+
+    # =====================================================
+    # MAIN TWO-COLUMN DASHBOARD
+    # =====================================================
+
+    left_panel, right_panel = st.columns(
+        [1.4, 1.0]
+    )
+
+
+    # =====================================================
+    # LEFT PANEL
+    # =====================================================
+
+    with left_panel:
+
+        st.markdown(
+            "<h4 style='font-weight:600; color:#E5E7EB; "
+            "margin-bottom:10px;'>"
+            "🛰️ SPATIAL ANALYSIS FIELD"
+            "</h4>",
+            unsafe_allow_html=True
+        )
+
+        route_layer = st.checkbox(
+            "DEPLOY INTERVENTION PATH LAYER",
+            value=True
+        )
+
+        # -------------------------------------------------
+        # REAL SATELLITE MAP
+        # -------------------------------------------------
+
+        lake_map = create_lake_map(
+            data["lat"],
+            data["lon"],
+            selected_lake
+        )
+
+        st_folium(
+            lake_map,
+            width=None,
+            height=500,
+            returned_objects=[]
+        )
+
+
+        # =================================================
+        # SENTINEL-2 ANALYSIS
+        # =================================================
+
+        st.markdown(
+            "### 🛰️ Sentinel-2 Spectral Analysis"
+        )
+
+        st.markdown(
+            "<div class='satellite-badge'>"
+            "● SENTINEL-2 SPECTRAL ANALYSIS | NDCI"
+            "</div>",
+            unsafe_allow_html=True
+        )
+
+        with st.spinner(
+            "Processing multispectral response matrix..."
+        ):
+
+            time.sleep(0.8)
+
+            fig_ndci, ndci = draw_spectral_analysis(
+                selected_lake
+            )
+
+        st.pyplot(
+            fig_ndci,
+            use_container_width=True
+        )
+
+
+        # =================================================
+        # SPECTRAL STATISTICS
+        # =================================================
+
+        valid_values = ndci[
+            np.isfinite(ndci)
+        ]
+
+        if len(valid_values) > 0:
+
+            mean_ndci = np.mean(
+                valid_values
+            )
+
+            max_ndci = np.max(
+                valid_values
+            )
+
+            hotspot_fraction = (
+                np.sum(
+                    valid_values > 0.15
+                )
+                /
+                len(valid_values)
+                *
+                100
+            )
+
+            stat1, stat2, stat3 = st.columns(3)
+
+            with stat1:
+
+                st.metric(
+                    "MEAN NDCI",
+                    f"{mean_ndci:.3f}"
+                )
+
+            with stat2:
+
+                st.metric(
+                    "PEAK NDCI",
+                    f"{max_ndci:.3f}"
+                )
+
+            with stat3:
+
+                st.metric(
+                    "HIGH-SIGNAL AREA",
+                    f"{hotspot_fraction:.1f}%"
+                )
+
+
+    # =====================================================
+    # RIGHT PANEL
+    # =====================================================
+
+    with right_panel:
+
+        # =================================================
+        # AGENT LOG
+        # =================================================
+
+        st.markdown(
+            "<h4 style='font-weight:600; color:#E5E7EB; "
+            "margin-bottom:10px;'>"
+            "🤖 AGENT TASK SEQUENCE LOG"
+            "</h4>",
+            unsafe_allow_html=True
+        )
+
+        log_block = "<br>".join(
+            data["logs"]
+        )
+
+        st.markdown(
+            f"<div class='terminal-box'>"
+            f"{log_block}"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+
+
+        st.markdown(
+            "<br>",
+            unsafe_allow_html=True
+        )
+
+
+        # =================================================
+        # ANALYSIS BASIS
+        # =================================================
+
+        st.markdown(
+            "<h4 style='font-weight:600; color:#E5E7EB; "
+            "margin-bottom:10px;'>"
+            "📚 ANALYSIS BASIS"
+            "</h4>",
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            "<div class='analysis-card'>"
+
+            "<span style='color:#22D3EE;'>"
+            "SPECTRAL PLATFORM"
+            "</span><br>"
+            "Sentinel-2 multispectral imagery"
+            "<br><br>"
+
+            "<span style='color:#22D3EE;'>"
+            "SPECTRAL BANDS"
+            "</span><br>"
+            "B04 Red / B05 Red-Edge"
+            "<br><br>"
+
+            "<span style='color:#22D3EE;'>"
+            "INDEX"
+            "</span><br>"
+            "Normalized Difference Chlorophyll Index"
+            "<br><br>"
+
+            "<span style='color:#22D3EE;'>"
+            "TARGET"
+            "</span><br>"
+            "Aquatic biomass hotspot identification"
+
+            "</div>",
+            unsafe_allow_html=True
+        )
+
+
+        st.markdown(
+            "<br>",
+            unsafe_allow_html=True
+        )
+
+
+        # =================================================
+        # VIRTUAL AUV
+        # =================================================
+
+        st.markdown(
+            "<h4 style='font-weight:600; color:#E5E7EB; "
+            "margin-bottom:10px;'>"
+            "🤿 VIRTUAL AUV MISSION"
+            "</h4>",
+            unsafe_allow_html=True
+        )
+
+        if route_layer:
+
+            route_fig = draw_auv_route(
+                selected_lake
+            )
+
+            st.pyplot(
+                route_fig,
+                use_container_width=True
+            )
+
+        else:
+
+            st.info(
+                "Intervention path layer disabled."
+            )
+
+
+        st.markdown(
+            "<br>",
+            unsafe_allow_html=True
+        )
+
+
+        # =================================================
+        # TELEMETRY
+        # =================================================
+
+        st.markdown(
+            "<h4 style='font-weight:600; color:#E5E7EB; "
+            "margin-bottom:10px;'>"
+            "📊 SYSTEM TELEMETRY"
+            "</h4>",
+            unsafe_allow_html=True
+        )
+
+        telemetry_text = (
+
+            f"[TARGET] Coordinates        : "
+            f"{data['lat']:.4f}, {data['lon']:.4f}\n"
+
+            f"[SATELLITE] Platform        : "
+            f"Sentinel-2\n"
+
+            f"[SPECTRAL] Processing       : "
+            f"Multispectral response matrix\n"
+
+            f"[SPECTRAL] Index            : "
+            f"NDCI\n"
+
+            f"[THERMAL] Surface baseline  : "
+            f"{data['temp']}\n"
+
+            f"[OPTICAL] Turbidity profile : "
+            f"{data['turb']}\n"
+
+            f"[GRID] Spatial resolution   : "
+            f"180 x 180 cells\n"
+
+            f"[AGENT] Decision engine     : "
+            f"HAB hotspot classification\n"
+
+            f"[SYSTEM] Analysis state     : "
+            f"COMPLETE"
+        )
+
+        st.code(
+            telemetry_text,
+            language="bash"
+        )
+
+
+else:
+
+    # =====================================================
+    # STANDBY SCREEN
+    # =====================================================
+
+    st.markdown(
+        "<div style='background-color:#111827; "
+        "padding:20px; border-radius:6px; "
+        "border:1px dashed #374151; "
+        "color:#9CA3AF; text-align:center;'>"
+
+        "▲ Operational Control Pipeline Standby. "
+        "Select an inland water system in the task "
+        "configuration sidebar and execute analysis sequence."
+
+        "</div>",
+        unsafe_allow_html=True
+    )
