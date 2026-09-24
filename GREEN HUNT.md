@@ -1,5 +1,13 @@
 
+
 # GREEN HUNT
+
+
+
+
+https://github.com/user-attachments/assets/dc66de7c-b146-41dd-986a-c3eb1a191b22
+
+
 
 ### Satellite-Guided Intelligence for Autonomous Harmful Algal Bloom Intervention
 
@@ -76,12 +84,4 @@ Decision & Mission Planning
 Virtual AUV Route
         ↓
 Targeted Intervention
-
-
-
-https://github.com/user-attachments/assets/a6be3b0d-571a-4165-a9de-3b4168f2ea18
-
-
-
-
 
